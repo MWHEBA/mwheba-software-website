@@ -1,8 +1,42 @@
+# Node & Dependencies
 node_modules/
-build/
+
+# Production Builds
 dist/
-coverage/
-.DS_Store
-*.log
-.env*
+build/
+out/
+
+# Environment Files
+.env
+.env.*
+.env*.local
 !.env.example
+
+# SSH Keys & Secrets
+id_rsa
+id_rsa*
+id_ed25519*
+*.pem
+*.key
+ssh_key*
+
+# Deploy Logs & Cache
+deploy_logs/
+.deploy_hashes.json
+.deploy_package.zip
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# System, IDEs & Logs
+.DS_Store
+Thumbs.db
+*.log
+coverage/
+.vscode/
+.idea/
