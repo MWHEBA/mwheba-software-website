@@ -39,13 +39,8 @@ export const Hero: React.FC<HeroProps> = ({
   // Smooth Interactive Mouse Spotlight Tracker
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const normX = useMotionValue(0); // -1 to +1 relative to center
-  const normY = useMotionValue(0); // -1 to +1 relative to center
-
-  const springX = useSpring(mouseX, { damping: 28, stiffness: 220 });
-  const springY = useSpring(mouseY, { damping: 28, stiffness: 220 });
-  const springNormX = useSpring(normX, { damping: 30, stiffness: 180 });
-  const springNormY = useSpring(normY, { damping: 30, stiffness: 180 });
+  const springX = useSpring(mouseX, { damping: 32, stiffness: 300 });
+  const springY = useSpring(mouseY, { damping: 32, stiffness: 300 });
 
   // Parallax Scroll Tracking
   const { scrollYProgress } = useScroll({
@@ -58,26 +53,16 @@ export const Hero: React.FC<HeroProps> = ({
   const scaleWindow = useTransform(scrollYProgress, [0.1, 0.5, 0.9], [0.92, 1, 1.02]);
   const windowY = useTransform(scrollYProgress, [0.1, 0.6], [50, -15]);
 
-  // Subtle Mouse Parallax / Tilt (0deg when idle or at center)
-  const windowTiltX = useTransform(springNormX, [-1, 1], [-2.5, 2.5]);
-  const windowTiltY = useTransform(springNormY, [-1, 1], [2, -2]);
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const relX = e.clientX - rect.left;
-    const relY = e.clientY - rect.top;
-    mouseX.set(relX);
-    mouseY.set(relY);
-    normX.set(((relX / rect.width) - 0.5) * 2);
-    normY.set(((relY / rect.height) - 0.5) * 2);
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
     if (!isHovered) setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    normX.set(0);
-    normY.set(0);
   };
 
   const industryPresets: Record<IndustryType, {
@@ -212,7 +197,7 @@ export const Hero: React.FC<HeroProps> = ({
         className="absolute inset-0 pointer-events-none z-0 overflow-hidden"
       >
         <svg
-          className="w-full h-full opacity-40"
+          className="w-full h-full opacity-50 [mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(0,0,0,0.4)_0%,black_85%)] [-webkit-mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(0,0,0,0.4)_0%,black_85%)]"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
@@ -236,31 +221,11 @@ export const Hero: React.FC<HeroProps> = ({
           style={{
             x: springX,
             y: springY,
-            translateX: '-50%',
-            translateY: '-50%',
           }}
-          className={`absolute pointer-events-none z-0 w-[550px] h-[550px] rounded-full bg-[#00ACD4]/10 blur-3xl transition-opacity duration-500 ${
+          className={`absolute top-0 left-0 -ml-64 -mt-64 pointer-events-none z-0 w-[512px] h-[512px] rounded-full bg-[#00ACD4]/8 blur-3xl transition-opacity duration-300 ${
             isHovered ? 'opacity-100' : 'opacity-0'
           }`}
         />
-
-        {/* INTERACTIVE TECHNICAL CROSSHAIR TARGET */}
-        <motion.div
-          style={{
-            x: springX,
-            y: springY,
-            translateX: '-50%',
-            translateY: '-50%',
-          }}
-          className={`hidden md:flex absolute pointer-events-none z-0 w-28 h-28 rounded-full border border-[#075D91]/20 items-center justify-center transition-opacity duration-300 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div className="w-2.5 h-2.5 rounded-full bg-[#00ACD4]/50 animate-ping" />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#075D91] absolute" />
-          <div className="absolute w-full h-px bg-[#075D91]/15" />
-          <div className="absolute h-full w-px bg-[#075D91]/15" />
-        </motion.div>
 
         {/* SIDE SIGNAL NODES */}
         <div className="hidden lg:flex absolute top-[24%] left-[7%] items-center justify-center">
@@ -413,13 +378,7 @@ export const Hero: React.FC<HeroProps> = ({
       {/* 3. PARALLAX SCROLL-SCALED APPLICATION WINDOW (Dynamic for the Selected Industry) */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 md:pt-16 md:pb-32 relative z-10">
         <motion.div
-          style={{
-            scale: scaleWindow,
-            y: windowY,
-            rotateX: windowTiltY,
-            rotateY: windowTiltX,
-            transformPerspective: 1200
-          }}
+          style={{ scale: scaleWindow, y: windowY }}
           className="relative max-w-5xl mx-auto rounded-2xl md:rounded-3xl bg-white border border-slate-200 shadow-2xl overflow-hidden text-start"
         >
           {/* WINDOW TOP BAR */}
