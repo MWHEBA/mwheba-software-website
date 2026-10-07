@@ -1,0 +1,6 @@
+{
+  "name": "MWHEBA Software Solutions",
+  "description": "Custom enterprise software, ERP & business management systems, web platforms, and workflow automation built around your business operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
