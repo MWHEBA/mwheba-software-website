@@ -239,7 +239,9 @@ export const Hero: React.FC<HeroProps> = ({
             translateX: '-50%',
             translateY: '-50%',
           }}
-          className="absolute pointer-events-none z-0 w-[550px] h-[550px] rounded-full bg-[#00ACD4]/10 blur-3xl"
+          className={`absolute pointer-events-none z-0 w-[550px] h-[550px] rounded-full bg-[#00ACD4]/10 blur-3xl transition-opacity duration-500 ${
+            isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
         />
 
         {/* INTERACTIVE TECHNICAL CROSSHAIR TARGET */}
@@ -250,7 +252,9 @@ export const Hero: React.FC<HeroProps> = ({
             translateX: '-50%',
             translateY: '-50%',
           }}
-          className="hidden md:flex absolute pointer-events-none z-0 w-28 h-28 rounded-full border border-[#075D91]/20 items-center justify-center"
+          className={`hidden md:flex absolute pointer-events-none z-0 w-28 h-28 rounded-full border border-[#075D91]/20 items-center justify-center transition-opacity duration-300 ${
+            isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
         >
           <div className="w-2.5 h-2.5 rounded-full bg-[#00ACD4]/50 animate-ping" />
           <div className="w-1.5 h-1.5 rounded-full bg-[#075D91] absolute" />
